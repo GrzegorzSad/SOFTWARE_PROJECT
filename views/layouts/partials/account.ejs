@@ -1,0 +1,6 @@
+<% if (userId !== undefined) { %>
+    <a href="/users/show/<%= userId %>"><%= username %></a>
+  <% } else { %>
+    <a href="/users/login">Log In</a>
+    <a href="/users/new">Sign Up</a>
+  <% } %>

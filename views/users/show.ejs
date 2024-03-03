@@ -1,0 +1,16 @@
+<div class="container">
+    <h1>User Profile</h1>
+    <div class="user-profile">
+        <div class="user-info">
+            <p><strong>Username:</strong> <%= user.username %></p>
+            <p><strong>Email:</strong> <%= user.email %></p>
+            <!-- Add any other user details you want to display -->
+        </div>
+        <div class="profile-image">
+            <img src="<%= user.profileImgUrl %>" alt="Profile Image">
+        </div>
+        <form action="/users/logout" method="get">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<h2>Create Product</h2>
+<form action="/products/" method="POST" enctype="multipart/form-data">
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name" value="<%= product.name %>"><br>
+    <label for="description">Description:</label><br>
+    <textarea id="description" name="description"><%= product.description %></textarea><br>
+    <label for="price">Price:</label><br>
+    <input type="number" id="price" name="price" step="0.01" value="<%= product.price %>"><br>
+    <label for="userId">User ID:</label><br>
+    <input type="text" id="userId" name="userId" value="<%= product.userId %>"><br><br>
+    <label for="userId">Images:</label><br>
+    <input type="file" id="images" name="images" multiple><br><br>
+    <button type="submit">Submit</button>
+  </form>
+  

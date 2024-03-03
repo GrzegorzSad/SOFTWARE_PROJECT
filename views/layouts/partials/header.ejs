@@ -1,0 +1,13 @@
+<header>
+
+    <nav>
+        <a href="/">Main page</a>
+        <a href="/products">Products</a>
+        <a href="/products/new">ProductsNew</a>
+        <% if(role === 'admin'){%>
+        <a href="/users">Profiles</a>
+        <%}%>
+        <%- include('account.ejs') %>
+    </nav>
+
+</header>

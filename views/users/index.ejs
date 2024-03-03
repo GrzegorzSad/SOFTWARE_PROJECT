@@ -1,0 +1,13 @@
+<h1>All USERS</h1>
+
+<% if (users.length === 0) { %>
+    <p>No users available.</p>
+<% } else { %>
+    <ul>
+        <% users.forEach(user => { %>
+            <li>
+                <h2><%= user.username %></h2>
+            </li>
+        <% }) %>
+    </ul>
+<% } %>
