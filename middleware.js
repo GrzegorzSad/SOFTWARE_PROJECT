@@ -12,7 +12,18 @@ function checkRole(role) {
     };
 }
 
+function loggedIn(){
+    return function(req, res, next){
+        const loggedIn = (req.session.userId !== undefined)
+        if (loggedIn === true){
+            next();
+        } else {
+            res.redirect('/users/login')
+        }
+    }
+}
 // Make checkRole globally available by attaching it to app.locals
 module.exports = {
-    checkRole: checkRole
+    checkRole: checkRole,
+    loggedIn: loggedIn
 };

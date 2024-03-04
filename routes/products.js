@@ -3,6 +3,7 @@ const router = express.Router()
 const Product = require('../models/product')
 const multer = require('multer')
 const path = require('path');
+const { loggedIn } = require('../middleware');
 
 // Define storage for uploaded files
 const storage = multer.diskStorage({
@@ -18,20 +19,29 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 
+router.get('/', async (req, res) => {
+    try {
+        let products;
 
-//All
-router.get('/', (req, res) => {
-    Product.find({})
-        .then(products => {
-            res.render('products', { products: products })
-        })
-        .catch(err => {
-            res.render('error', { errorMessage: 'Failed to fetch products' })
-        })
-})
+        // Check if a search query parameter exists
+        if (req.query.q) {
+            // Perform search based on query
+            products = await Product.find({ $text: { $search: req.query.q } }).populate('userId');
+        } else {
+            // Fetch all products if no query provided
+            products = await Product.find({}).populate('userId');
+        }
+
+        // Render the 'products' view with the products data
+        res.render('products', { products: products });
+    } catch (err) {
+        // Render an error page if an error occurs
+        res.render('products', { errorMessage: 'Failed to fetch products' });
+    }
+});
 
 //New
-router.get('/new', (req, res) => {
+router.get('/new', loggedIn(), (req, res) => {
     res.render("products/new", { product: new Product() })
 })
 

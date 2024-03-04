@@ -1,5 +1,13 @@
 <h1>All USERS</h1>
 
+
+<form action="/products" method="GET">
+<h1>Product Search</h1>
+    <input type="text" id="searchInput" placeholder="Search products...">
+    <button onclick="searchProducts()">Search</button>
+</form>
+
+
 <% if (users.length === 0) { %>
     <p>No users available.</p>
 <% } else { %>
