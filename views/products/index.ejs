@@ -1,30 +1,59 @@
-
 <form action="/products" method="GET">
     <h1>Product Search</h1>
     <input type="text" name="q" id="searchInput" placeholder="Search products...">
     <button type="submit">Search</button>
 </form>
 
-    
+
+<title>Simple Marker</title>
+<!-- The callback parameter is required, so we use console.debug as a noop -->
+<script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxJvrodMZmejSbwGnMpnrICC36ZSGlqW8&callback=console.debug&libraries=maps,marker&v=beta">
+    </script>
+<style>
+    /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+    gmp-map {
+        height: 100%;
+    }
+
+    /* Optional: Makes the sample page fill the window. */
+    html,
+    body {
+        height: 300px;
+        margin: 0;
+        padding: 0;
+    }
+</style>
+</head>
+
+<body>
+    <gmp-map center="53.34980010986328,-6.2604169845581055" zoom="14" map-id="DEMO_MAP_ID">
+        <gmp-advanced-marker position="53.34980010986328,-6.2604169845581055" title="My location"></gmp-advanced-marker>
+    </gmp-map>
 
 
-<% if (products.length === 0) { %>
-    <p>No products available.</p>
-<% } else { %>
-    <ul>
-        <% products.forEach(product => { %>
-            <li>
-                <h2><%= product.name %></h2>
-                <p>Description: <%= product.description %></p>
-                <p>Price: <%= product.price %></p>
-                <!-- can delete when i fix the data -->
-                <% if (product.userId && product.userId.username){%>  
-                <p>User: <%= product.userId.username %></p>
-                <%}%>
-                <!-- Display images for the product -->
-                <img src ="<%= product.images[0]%>">
-            </li>
-        <% }) %>
-    </ul>
-<% } %>
-
+    <% if (products.length===0) { %>
+        <p>No products available.</p>
+        <% } else { %>
+            <ul>
+                <% products.forEach(product=> { %>
+                    <li>
+                        <h2>
+                            <%= product.name %>
+                        </h2>
+                        <p>Description: <%= product.description %>
+                        </p>
+                        <p>Price: <%= product.price %>
+                        </p>
+                        <!-- can delete when i fix the data -->
+                        <% if (product.userId && product.userId.username){%>
+                            <p>User: <%= product.userId.username %>
+                            </p>
+                            <%}%>
+                                <!-- Display images for the product -->
+                                <img src="<%= product.images[0]%>">
+                    </li>
+                    <% }) %>
+            </ul>
+            <% } %>
