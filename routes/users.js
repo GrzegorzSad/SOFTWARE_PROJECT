@@ -93,17 +93,23 @@ router.get('/new', (req, res) => {
 
 //create
 router.post('/', upload.single('profileImg'), async (req, res) => {
-    const { username, email, password, role } = req.body;
-    const profileImgUrl = req.file ? req.file.path.replace("public", '') : '/default-profile-image.jpg';
-    
-    try {
-      const newUser = new User({
-        username,
-        email,
-        password,
-        profileImgUrl,
-        role
-      });
+  const { username, email, password, role, lat, lng, addressDesc, address } = req.body;
+  const profileImgUrl = req.file ? req.file.path.replace("public", '') : '/default-profile-image.jpg';
+
+  try {
+    const newUser = new User({
+      username,
+      email,
+      password,
+      profileImgUrl,
+      role,
+      location: {
+        type: 'Point',
+        coordinates: [parseFloat(lng), parseFloat(lat)],
+        address: address, // Now using the full address from the geocoding result
+        addressDesc: addressDesc
+      }
+    });
   
       await newUser.save();
 
@@ -120,6 +126,11 @@ router.post('/', upload.single('profileImg'), async (req, res) => {
           email,
           password,
           role,
+          location: {
+            type: 'Point',
+            coordinates: [parseFloat(lng), parseFloat(lat)], // MongoDB expects coordinates in [longitude, latitude] order
+            address: addressDesc
+          },
           profileImgUrl: req.file ? req.file.path : '/default-profile-image.jpg'
         },
         errorMessage: 'Error creating user'

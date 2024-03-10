@@ -18,6 +18,42 @@
     <option value="user" selected>User</option>
     <option value="admin">Admin</option>
   </select>
+
+  <style>
+    /* Always set the map height explicitly to define the size of the div
+        * element that contains the map. */
+    #map {
+      height: 300px;
+    }
+
+    /* Optional: Makes the sample page fill the window. */
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+
+  <div>
+    <input type="text" id="addressInput" placeholder="Enter an address">
+    <button type="button" onclick="geocodeAddress()">Geocode</button>
+  </div>
+  <div id="map"></div>
+  
+  <script src="/js/mapLogic.js"></script>
+
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxJvrodMZmejSbwGnMpnrICC36ZSGlqW8&callback=initMap"></script>
+
+  <div id="markerAddressDisplay">Address will be shown here</div>
+  <label for="addressDesc">Address Description:</label>
+  <input type="text" id="addressDesc" name="addressDesc"><br>
+
+  <!-- Hidden fields for latitude and longitude -->
+  <input type="hidden" id="lat" name="lat">
+  <input type="hidden" id="lng" name="lng">
+  <input type="hidden" id="address" name="address">
   <br>
 
   <button type="submit">Create User</button>

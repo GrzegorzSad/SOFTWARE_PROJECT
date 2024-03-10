@@ -23,6 +23,20 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ['user', 'admin'], // Define possible roles for users
     default: 'user'
+  },
+  location: {
+    type: {
+      type: String, // Don't do `{ location: { type: String } }`
+      enum: ['Point'], // 'location.type' must be 'Point'
+      required: true,
+      default: 'Point'
+    },
+    coordinates: {
+      type: [Number], // [longitude, latitude]
+      required: true
+    },
+    address: { type: String, required: false }, // Optional: User can fill this later
+    addressDesc: { type: String, required: false }
   }
 });
 
@@ -40,6 +54,9 @@ const userSchema = new mongoose.Schema({
 //       next(error);
 //   }
 // });
+
+// Ensure the schema uses 2dsphere index for geospatial queries on location
+userSchema.index({ location: '2dsphere' });
 
 const User = mongoose.model('User', userSchema);
 
