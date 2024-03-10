@@ -4,41 +4,57 @@
     <button type="submit">Search</button>
 
     <label for="range">Distance range (km):</label>
-    <input type="range" id="range" name="range" min="1" max="100" value="50"> <!-- Adjust max value as needed -->
-    <span id="rangeValue">50</span> km
+    <input type="range" id="radiusSlider" min="1" max="100" value=2>
+    <div id="radiusValue">1 km</div>
 </form>
-
-
-
 
 <style>
     /* Always set the map height explicitly to define the size of the div
         * element that contains the map. */
     #map {
-        height: 300px;
+      height: 300px;
     }
 
     /* Optional: Makes the sample page fill the window. */
     html,
     body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
+      height: 100%;
+      margin: 0;
+      padding: 0;
     }
-</style>
+  </style>
 
-<div>
+  <div>
     <input type="text" id="addressInput" placeholder="Enter an address">
-    <button onclick="geocodeAddress()">Geocode</button>
-</div>
-<div id="map"></div>
+    <button type="button" onclick="geocodeAddress()">Geocode</button>
+  </div>
+  <div id="map"></div>
 
+  <% if (userLocation) { %>
+    <script>
+      // Safely initialize userLocation as a global JavaScript variable
+      var userLocation = <%- JSON.stringify(userLocation) %>;
+    </script>
+    <% } %>
 
-<script src="/js/mapLogic.js"></script>
+<% if (products) { %>
+    <script>
+         // Safely initialize products as a global JavaScript variable
+        var products = <%- JSON.stringify(products) %>;
+        console.log(products,'HERE 2')
+    </script>
+    <% } %>
+  
+  <script src="/js/mapLogic.js"></script>
 
-<script async defer
+  <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxJvrodMZmejSbwGnMpnrICC36ZSGlqW8&callback=initMap"></script>
 
+  <div id="markerAddressDisplay">Address will be shown here</div>
+
+  <input type="hidden" id="lat" name="lat">
+    <input type="hidden" id="lng" name="lng">
+    <input type="hidden" id="address" name="address">
 
 <% if (products.length===0) { %>
     <p>No products available.</p>

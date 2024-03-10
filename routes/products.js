@@ -8,22 +8,33 @@ const { loggedIn } = require('../middleware');
 
 // Define storage for uploaded files
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'public/uploads/') // Save uploaded files to the 'uploads' directory
-  },
-  filename: function (req, file, cb) {
-    const extension = path.extname(file.originalname); // Get file extension
-    cb(null, Date.now() + extension); // Append extension to generated filename
-  }
+    destination: function (req, file, cb) {
+        cb(null, 'public/uploads/') // Save uploaded files to the 'uploads' directory
+    },
+    filename: function (req, file, cb) {
+        const extension = path.extname(file.originalname); // Get file extension
+        cb(null, Date.now() + extension); // Append extension to generated filename
+    }
 });
 
 const upload = multer({ storage: storage });
 
 
 router.get('/', async (req, res) => {
+    let userLocation =[];
     try {
-        let products;
-
+        const user = await User.findById(req.session.userId); // Make sure userId is a valid ID
+        if (user) {
+            userLocation = user.location;
+            console.log(userLocation);
+        } else {
+            console.log("User not found");
+        }
+    } catch (error) {
+        console.error("Error fetching user:", error);
+    }
+    let products = [];
+    try {
         // Check if a search query parameter exists
         if (req.query.q) {
             // Perform search based on query
@@ -34,7 +45,7 @@ router.get('/', async (req, res) => {
         }
 
         // Render the 'products' view with the products data
-        res.render('products', { products: products });
+        res.render('products', { products: products, userLocation: userLocation });
     } catch (err) {
         // Render an error page if an error occurs
         res.render('products', { errorMessage: 'Failed to fetch products' });
@@ -47,15 +58,15 @@ router.get('/new', loggedIn(), async (req, res) => {
     try {
         const user = await User.findById(req.session.userId); // Make sure userId is a valid ID
         if (user) {
-          userLocation = user.location;
-          console.log(userLocation);
+            userLocation = user.location;
+            console.log(userLocation);
         } else {
-          console.log("User not found");
+            console.log("User not found");
         }
-      } catch (error) {
+    } catch (error) {
         console.error("Error fetching user:", error);
-      }
-    res.render("products/new", { product: new Product(), userLocation: userLocation})
+    }
+    res.render("products/new", { product: new Product(), userLocation: userLocation })
 })
 
 //create

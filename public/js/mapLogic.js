@@ -20,7 +20,7 @@ function initMap() {
     position: { lat: defaultLat, lng: defaultLng }, // Use userLocation for initial marker position
     map: map,
     draggable: true,
-    title: userLocation.address || 'My Location' // Optionally use the address as the marker title
+    title: 'My Location' // Optionally use the address as the marker title
   });
 
   // Add the 'dragend' listener inside initMap, after the marker has been created
@@ -42,31 +42,13 @@ function initMap() {
     document.getElementById('address').value = userLocation.address;
     document.getElementById('markerAddressDisplay').innerText = userLocation.address;
   }
+
+  // Example usage within initMap or after product data is fetched
+  // make sure products is defined and not null before calling
+  if (products) {
+    createProductMarkers(products);
+  }
 }
-
-if (product != null){
-  products.forEach(function (product) {
-    // Ensure product.location.coordinates contains [longitude, latitude]
-      marker = new google.maps.Marker({
-      position: { lat: product.location.coordinates[1], lng: product.location.coordinates[0] },
-      map: map,
-      title: product.name
-    });
-  });
-}
-
-// Add the 'dragend' listener inside initMap, after the marker has been created
-marker.addListener('dragend', function () {
-  var lat = marker.getPosition().lat();
-  var lng = marker.getPosition().lng();
-
-  // Update the hidden fields for latitude and longitude
-  document.getElementById('lat').value = lat;
-  document.getElementById('lng').value = lng;
-
-  // Call the function to update the address input with the new location
-  updateAddressFromMarker(lat, lng);
-});
 
 
 function geocodeAddress() {
@@ -91,6 +73,19 @@ function geocodeAddress() {
     }
   });
 }
+
+function createProductMarkers(products) {
+
+  products.forEach(function (product) {
+    console.log(product, 'HERE');
+    let productMarker = new google.maps.Marker({
+      position: { lat: product.location.coordinates[1], lng: product.location.coordinates[0] },
+      map: map,
+      title: product.name
+    });
+  });
+}
+
 
 function updateAddressFromMarker(lat, lng) {
   var geocoder = new google.maps.Geocoder();
