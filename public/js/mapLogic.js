@@ -1,3 +1,6 @@
+if (pinLocation==undefined){
+  var pinLocation = 0;
+}
 var map;
 var marker; // Declare marker at a higher scope
 
@@ -11,12 +14,14 @@ function initMap() {
     defaultLat = +pinLocation[0];
     defaultLng = +pinLocation[1];
     console.log(...pinLocation)
-  }
+  } 
   // Then, fallback to userLocation if pinLocation doesn't exist
   else if (window.userLocation && userLocation.coordinates) {
     defaultLat = userLocation.coordinates[1]; // Latitude from userLocation
     defaultLng = userLocation.coordinates[0]; // Longitude from userLocation
   }
+
+  updateAddressFromMarker(defaultLat, defaultLng);
 
   map = new google.maps.Map(document.getElementById('map'), {
     center: { lat: defaultLat, lng: defaultLng },
@@ -55,6 +60,7 @@ function initMap() {
   if (products) {
     createProductMarkers(products);
   }
+  
 }
 
 

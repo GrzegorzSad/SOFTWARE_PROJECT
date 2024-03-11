@@ -3,9 +3,7 @@
     <input type="text" name="q" id="searchInput" placeholder="Search products...">
     <button type="submit">Search</button>
 
-    <label for="range">Distance range (km):</label>
-    <input type="range" id="radiusSlider" min="1" max="100" value=2>
-    <div id="radiusValue">1 km</div>
+    
 
 
     <input type="hidden" id="address" name="address">
@@ -14,6 +12,11 @@
 <form action="/products/updateLocation" method="POST">
   <input type="hidden" id="lat" name="lat" value="">
   <input type="hidden" id="lng" name="lng" value="">
+
+
+    <input type="range" id="radiusSlider" name="range" min="1" max="100" value="<%= range%>">
+
+
   <button type="submit">Update Location</button>
 </form>
 

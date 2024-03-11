@@ -15,6 +15,7 @@ const bodyParser = require('body-parser');
 
 const { checkRole } = require('./middleware');
 
+
 // Make checkRole globally available by attaching it to app.locals
 app.locals.checkRole = checkRole(app); // Pass app as a parameter
 

@@ -38,7 +38,7 @@ const productSchema = new mongoose.Schema({
 
 productSchema.index({ name: 'text' }); // Needed for searches
 // Adding a GeoJSON index for efficient querying by location
-productSchema.index({ "location.coordinates": "2dsphere" });
+productSchema.index({ "location": "2dsphere" });
 
 const Product = mongoose.model('Product', productSchema);
 
