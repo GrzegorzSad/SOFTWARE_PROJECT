@@ -6,6 +6,15 @@
     <label for="range">Distance range (km):</label>
     <input type="range" id="radiusSlider" min="1" max="100" value=2>
     <div id="radiusValue">1 km</div>
+
+
+    <input type="hidden" id="address" name="address">
+</form>
+
+<form action="/products/updateLocation" method="POST">
+  <input type="hidden" id="lat" name="lat" value="">
+  <input type="hidden" id="lng" name="lng" value="">
+  <button type="submit">Update Location</button>
 </form>
 
 <style>
@@ -37,6 +46,13 @@
     </script>
     <% } %>
 
+    <% if (pinLocation) { %>
+      <script>
+        // Safely initialize userLocation as a global JavaScript variable
+        var pinLocation = <%- JSON.stringify(pinLocation) %>;
+      </script>
+      <% } %>
+
 <% if (products) { %>
     <script>
          // Safely initialize products as a global JavaScript variable
@@ -52,9 +68,7 @@
 
   <div id="markerAddressDisplay">Address will be shown here</div>
 
-  <input type="hidden" id="lat" name="lat">
-    <input type="hidden" id="lng" name="lng">
-    <input type="hidden" id="address" name="address">
+  
 
 <% if (products.length===0) { %>
     <p>No products available.</p>

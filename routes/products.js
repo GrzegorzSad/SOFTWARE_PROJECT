@@ -19,9 +19,20 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+let pinLocation = [];
+
+router.post('/updateLocation', (req, res) => {
+    try {
+        pinLocation = [req.body.lat, req.body.lng]
+        console.log(pinLocation, 'PIN')
+    } catch (error) {
+        console.error("Error fetching pin:", error);
+    }
+    res.redirect('/products',)
+})
 
 router.get('/', async (req, res) => {
-    let userLocation =[];
+    let userLocation = [];
     try {
         const user = await User.findById(req.session.userId); // Make sure userId is a valid ID
         if (user) {
@@ -45,7 +56,7 @@ router.get('/', async (req, res) => {
         }
 
         // Render the 'products' view with the products data
-        res.render('products', { products: products, userLocation: userLocation });
+        res.render('products', { products: products, userLocation: userLocation, pinLocation: pinLocation });
     } catch (err) {
         // Render an error page if an error occurs
         res.render('products', { errorMessage: 'Failed to fetch products' });

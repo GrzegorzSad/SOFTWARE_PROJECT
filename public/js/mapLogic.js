@@ -6,9 +6,16 @@ function initMap() {
   var defaultLat = 53.3498; // Fallback latitude
   var defaultLng = -6.2603; // Fallback longitude
 
-  if (window.userLocation && userLocation.coordinates) {
-    defaultLat = userLocation.coordinates[1]; // Latitude
-    defaultLng = userLocation.coordinates[0]; // Longitude
+  // First, check if pinLocation is defined and has coordinates
+  if (pinLocation && pinLocation[0] && pinLocation[1]) {
+    defaultLat = +pinLocation[0];
+    defaultLng = +pinLocation[1];
+    console.log(...pinLocation)
+  }
+  // Then, fallback to userLocation if pinLocation doesn't exist
+  else if (window.userLocation && userLocation.coordinates) {
+    defaultLat = userLocation.coordinates[1]; // Latitude from userLocation
+    defaultLng = userLocation.coordinates[0]; // Longitude from userLocation
   }
 
   map = new google.maps.Map(document.getElementById('map'), {
@@ -90,6 +97,9 @@ function createProductMarkers(products) {
 function updateAddressFromMarker(lat, lng) {
   var geocoder = new google.maps.Geocoder();
   var latlng = { lat: parseFloat(lat), lng: parseFloat(lng) };
+  document.getElementById('lat').value = latlng.lat;
+  document.getElementById('lng').value = latlng.lng;
+  console.log(latlng,"hererererere")
 
   geocoder.geocode({ 'location': latlng }, function (results, status) {
     if (status === 'OK') {
