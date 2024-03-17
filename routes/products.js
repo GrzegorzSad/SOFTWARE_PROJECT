@@ -37,13 +37,13 @@ let range = 50;
 
 router.post('/updateLocation', (req, res) => {
     try {
-        pinLocation = [req.body.lat, req.body.lng]
+        pinLocation = [parseFloat(req.body.lat), parseFloat(req.body.lng)];
         console.log(pinLocation, 'PIN')
     } catch (error) {
         console.error("Error fetching pin:", error);
     }
     try {
-        range = req.body.range
+        range = +req.body.range
         console.log(range)
     } catch (error) {
         console.error("Error fetching pin:", error);
@@ -51,10 +51,13 @@ router.post('/updateLocation', (req, res) => {
     res.redirect('/products',)
 })
 
+
+
 router.get('/', async (req, res) => {
     let userLocation = [];
+
     try {
-        const user = await User.findById(req.session.userId); // Make sure userId is a valid ID
+        const user = await User.findById(req.session.userId);
         if (user) {
             userLocation = user.location;
             console.log(userLocation);
@@ -64,54 +67,50 @@ router.get('/', async (req, res) => {
     } catch (error) {
         console.error("Error fetching user:", error);
     }
-    let products = [];
 
-    if (pinLocation == undefined) {
-        pinLocation = userLocation.coordinates
+    // Assign pinLocation based on userLocation if it's not defined
+    if (!pinLocation) {
+        pinLocation = userLocation.coordinates;
     }
 
+    // Ensure pinLocation is a valid array of coordinates
     pinLocation = [parseFloat(pinLocation[0]), parseFloat(pinLocation[1])];
-
-    console.log(pinLocation)
+    console.log(pinLocation);
 
     try {
-        // Check if a search query parameter exists
+        let products = [];
+
         if (req.query.q) {
-            // Perform search based on query
-            products = await Product.find({ $text: { $search: req.query.q } },).populate('userId');
+            // Perform text search query
+            products = await Product.find({ $text: { $search: req.query.q } }).populate('userId');
         } else {
-            // Fetch all products if no query provided
             products = await Product.find({}).populate('userId');
         }
 
         console.log(products);
 
         let filteredProducts = [];
-        try {
-            // Fetch all products (assuming you'll refine this to include necessary fields only)
-            let allProducts = await Product.find({}).populate('userId');
 
+        try {
             // Filter products based on distance
-            filteredProducts = allProducts.filter(product => {
+            filteredProducts = products.filter(product => {
                 if (!product.location || !product.location.coordinates) return false;
 
-                // Assuming product.location.coordinates = [longitude, latitude]
                 const productLat = product.location.coordinates[1];
                 const productLon = product.location.coordinates[0];
                 const distance = calculateDistance(pinLocation[0], pinLocation[1], productLat, productLon);
 
-                return distance <= range; // Only include products within the specified range
+                return distance <= range;
             });
 
             console.log(filteredProducts);
         } catch (err) {
-            console.error("Error fetching or filtering products:", err);
+            console.error("Error filtering products:", err);
         }
 
-        // Render the 'products' view with the products data
-        res.render('products', { products: filteredProducts, userLocation: userLocation, pinLocation: pinLocation, range: range });
+        res.render('products', { products: filteredProducts, userLocation, pinLocation, range });
     } catch (err) {
-        // Render an error page if an error occurs
+        console.error("Error fetching products:", err);
         res.render('products', { errorMessage: 'Failed to fetch products' });
     }
 });
