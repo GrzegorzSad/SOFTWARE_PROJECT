@@ -75,7 +75,7 @@
                   <% products.forEach(product=> { %>
                     <li>
                       <h2>
-                        <%= product.name %>
+                        <a href="/products/<%= product._id %>"><%= product.name %></a>
                       </h2>
                       <p>Description: <%= product.description %>
                       </p>

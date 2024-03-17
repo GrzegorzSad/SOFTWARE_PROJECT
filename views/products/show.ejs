@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= product.name %> Detail</title>
+</head>
+<body>
+  <h1><%= product.name %> Detail</h1>
+  <p>User: <%= product.userId.username %></p>
+  <p>Description: <%= product.description %></p>
+  <p>Price: <%= product.price %></p>
+  <p>Images:</p>
+  <ul>
+    <% product.images.forEach(image => { %>
+      <li><img src="<%= image %>" alt="Product Image"></li>
+    <% }); %>
+  </ul>
+  <p>Location:</p>
+  <p>Coordinates: <%= product.location.coordinates %></p>
+  <% if (product.location.address) { %>
+    <p>Address: <%= product.location.address %></p>
+  <% } %>
+  <% if (product.location.addressDesc) { %>
+    <p>Address Description: <%= product.location.addressDesc %></p>
+  <% } %>
+</body>
+</html>

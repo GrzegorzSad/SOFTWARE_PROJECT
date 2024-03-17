@@ -1,6 +1,4 @@
 todo:
-radius on map
-combine update location and search
-product detail view
+product detail view finish(add map)
 booking system
 review system

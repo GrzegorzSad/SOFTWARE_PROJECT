@@ -144,6 +144,23 @@ router.post('/', upload.array('images', 5), async (req, res) => {
     }
 });
 
+//show
+router.get('/:productId', async (req, res) => {
+    try {
+      const product = await Product.findById(req.params.productId).populate('userId');
+  
+      if (!product) {
+        return res.status(404).send('Product not found');
+      }
+  
+       res.render('products/show', { product : product });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  });
+
+
 //Edit
 
 //Delete
