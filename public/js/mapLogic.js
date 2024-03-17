@@ -3,6 +3,7 @@ if (pinLocation==undefined){
 }
 var map;
 var marker; // Declare marker at a higher scope
+var circle;
 
 function initMap() {
   // Check if userLocation is defined and has coordinates
@@ -35,6 +36,23 @@ function initMap() {
     title: 'My Location' // Optionally use the address as the marker title
   });
 
+  // Initialize the circle with an initial radius
+  circle = new google.maps.Circle({
+    strokeColor: "#FF0000",
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillColor: "#FF0000",
+    fillOpacity: 0.35,
+    map: map,
+    center: { lat: defaultLat, lng: defaultLng },
+    radius: parseFloat(document.getElementById('radiusSlider').value) * 1000, // Convert to meters
+});
+
+// Attach an event listener to the range input to update the circle radius
+document.getElementById('radiusSlider').addEventListener('input', function () {
+    circle.setRadius(parseFloat(this.value) * 1000); // Convert to meters
+});
+
   // Add the 'dragend' listener inside initMap, after the marker has been created
   marker.addListener('dragend', function () {
     var lat = marker.getPosition().lat();
@@ -46,6 +64,7 @@ function initMap() {
 
     // Call the function to update the address input with the new location
     updateAddressFromMarker(lat, lng);
+    circle.setCenter({ lat: lat, lng: lng });
   });
 
   // Optionally, immediately update address display if userLocation has an address

@@ -6,19 +6,6 @@ const multer = require('multer')
 const path = require('path');
 const { loggedIn } = require('../middleware');
 
-function calculateDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371; // Radius of the Earth in km
-    const dLat = (lat2 - lat1) * (Math.PI / 180);
-    const dLon = (lon2 - lon1) * (Math.PI / 180);
-    const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
-        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = R * c; // Distance in km
-    return distance;
-}
-
 // Define storage for uploaded files
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -35,34 +22,19 @@ const upload = multer({ storage: storage });
 let pinLocation = [];
 let range = 50;
 
-router.post('/updateLocation', (req, res) => {
-    try {
-        pinLocation = [parseFloat(req.body.lat), parseFloat(req.body.lng)];
-        console.log(pinLocation, 'PIN')
-    } catch (error) {
-        console.error("Error fetching pin:", error);
-    }
-    try {
-        range = +req.body.range
-        console.log(range)
-    } catch (error) {
-        console.error("Error fetching pin:", error);
-    }
-    res.redirect('/products',)
-})
-
-
-
 router.get('/', async (req, res) => {
+    pinLocation = [+req.query.lng, +req.query.lat]
+    range = +req.query.range
+    
     let userLocation = [];
 
     try {
         const user = await User.findById(req.session.userId);
         if (user) {
             userLocation = user.location;
-            console.log(userLocation);
+            //console.log(userLocation);
         } else {
-            console.log("User not found");
+            //console.log("User not found");
         }
     } catch (error) {
         console.error("Error fetching user:", error);
@@ -74,41 +46,46 @@ router.get('/', async (req, res) => {
     }
 
     // Ensure pinLocation is a valid array of coordinates
-    pinLocation = [parseFloat(pinLocation[0]), parseFloat(pinLocation[1])];
-    console.log(pinLocation);
+    //console.log(pinLocation);
+
+    let products = []
 
     try {
-        let products = [];
 
-        if (req.query.q) {
-            // Perform text search query
-            products = await Product.find({ $text: { $search: req.query.q } }).populate('userId');
-        } else {
-            products = await Product.find({}).populate('userId');
-        }
+        
 
-        console.log(products);
+        const query = {
+            $and: [
+                // Conditionally include the $text search if req.query.q exists
+                req.query.q ? { $text: { $search: req.query.q } } : {},
+                {
+                    "location": {
+                        $geoWithin: {
+                            $centerSphere: [[pinLocation[0], pinLocation[1]], range / 6371] //from radians to kms
+                        }
+                    }
+                }
+            ]
+        };
 
-        let filteredProducts = [];
-
-        try {
-            // Filter products based on distance
-            filteredProducts = products.filter(product => {
-                if (!product.location || !product.location.coordinates) return false;
-
-                const productLat = product.location.coordinates[1];
-                const productLon = product.location.coordinates[0];
-                const distance = calculateDistance(pinLocation[0], pinLocation[1], productLat, productLon);
-
-                return distance <= range;
+        const result = await Product.find(query)
+            .populate('userId')
+            .then(result => {
+                console.log(result); // populated documents
+                products = result
+            })
+            .catch(err => {
+                console.error(err);
             });
 
-            console.log(filteredProducts);
-        } catch (err) {
-            console.error("Error filtering products:", err);
-        }
+        // } else {
+        //     products = await Product.find({}).populate('userId');
+        // }
 
-        res.render('products', { products: filteredProducts, userLocation, pinLocation, range });
+        //console.log(products);
+
+
+        res.render('products', { products: products, userLocation: userLocation, pinLocation: pinLocation, range: range, q:req.query.q });
     } catch (err) {
         console.error("Error fetching products:", err);
         res.render('products', { errorMessage: 'Failed to fetch products' });
@@ -122,9 +99,9 @@ router.get('/new', loggedIn(), async (req, res) => {
         const user = await User.findById(req.session.userId); // Make sure userId is a valid ID
         if (user) {
             userLocation = user.location;
-            console.log(userLocation);
+            //console.log(userLocation);
         } else {
-            console.log("User not found");
+            //console.log("User not found");
         }
     } catch (error) {
         console.error("Error fetching user:", error);
