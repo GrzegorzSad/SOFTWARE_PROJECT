@@ -1,23 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= product.name %> Detail</title>
-</head>
-<body>
-  <h1><%= product.name %> Detail</h1>
-  <p>User: <%= product.userId.username %></p>
-  <p>Description: <%= product.description %></p>
-  <p>Price: <%= product.price %></p>
-  <p>Images:</p>
-  <ul>
-    <% product.images.forEach(image => { %>
-      <li><img src="<%= image %>" alt="Product Image"></li>
-    <% }); %>
-  </ul>
-  <p>Location:</p>
-  <p>Coordinates: <%= product.location.coordinates %></p>
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= product.name %> Detail</title>
+    <!-- Add Google Maps API script -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+    <style>
+      /* CSS for map container */
+      #map {
+        height: 400px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1><%= product.name %> Detail</h1>
+    <p>User: <%= product.userId.username %></p>
+    <p>Description: <%= product.description %></p>
+    <p>Price: <%= product.price %></p>
+    <p>Images:</p>
+    <ul>
+      <% product.images.forEach(image => { %>
+        <li><img src="<%= image %>" alt="Product Image"></li>
+      <% }); %>
+    </ul>
+    <p>Location:</p>
+  
+    <!-- Map container -->
+    <div id="map"></div>
+  
+    <script>
+      // JavaScript to initialize Google Map
+      function initMap() {
+        // Product coordinates
+        var productCoordinates = <%= JSON.stringify(product.location.coordinates) %>;
+        
+        // Create a map centered at the product coordinates
+        var map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 12, // Adjust zoom level as needed
+          center: { lat: productCoordinates[1], lng: productCoordinates[0] } // Coordinates in [longitude, latitude] format
+        });
+  
+        // Create a marker at the product location
+        var marker = new google.maps.Marker({
+          position: { lat: productCoordinates[1], lng: productCoordinates[0] },
+          map: map,
+          title: "<%= product.name %> Location" // Optional: Tooltip text for marker
+        });
+      }
+    </script>
+    
+    <!-- Call the initMap function after Google Maps API is loaded -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxJvrodMZmejSbwGnMpnrICC36ZSGlqW8&callback=initMap"></script>
+  </body>
+  </html>
+  
   <% if (product.location.address) { %>
     <p>Address: <%= product.location.address %></p>
   <% } %>

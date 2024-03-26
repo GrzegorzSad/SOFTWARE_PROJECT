@@ -25,7 +25,7 @@ let range = 50;
 router.get('/', async (req, res) => {
     pinLocation = [+req.query.lng, +req.query.lat]
     range = +req.query.range
-    
+
     let userLocation = [];
 
     try {
@@ -52,7 +52,7 @@ router.get('/', async (req, res) => {
 
     try {
 
-        
+
 
         const query = {
             $and: [
@@ -85,7 +85,7 @@ router.get('/', async (req, res) => {
         //console.log(products);
 
 
-        res.render('products', { products: products, userLocation: userLocation, pinLocation: pinLocation, range: range, q:req.query.q });
+        res.render('products', { products: products, userLocation: userLocation, pinLocation: pinLocation, range: range, q: req.query.q });
     } catch (err) {
         console.error("Error fetching products:", err);
         res.render('products', { errorMessage: 'Failed to fetch products' });
@@ -146,19 +146,32 @@ router.post('/', upload.array('images', 5), async (req, res) => {
 
 //show
 router.get('/:productId', async (req, res) => {
+    let userLocation = [];
+
     try {
-      const product = await Product.findById(req.params.productId).populate('userId');
-  
-      if (!product) {
-        return res.status(404).send('Product not found');
-      }
-  
-       res.render('products/show', { product : product });
+        const user = await User.findById(req.session.userId);
+        if (user) {
+            userLocation = user.location;
+            //console.log(userLocation);
+        } else {
+            //console.log("User not found");
+        }
     } catch (error) {
-      console.error(error);
-      res.status(500).send('Internal Server Error');
+        console.error("Error fetching user:", error);
     }
-  });
+    try {
+        const product = await Product.findById(req.params.productId).populate('userId');
+
+        if (!product) {
+            return res.status(404).send('Product not found');
+        }
+
+        res.render('products/show', { product: product, userLocation: userLocation });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 
 //Edit
