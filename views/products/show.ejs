@@ -1,11 +1,25 @@
   <!DOCTYPE html>
   <html lang="en">
   <head>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+    <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth',
+          selectable: true, // Enable day selection
+        });
+        calendar.render();
+      });
+
+      
+
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= product.name %> Detail</title>
-    <!-- Add Google Maps API script -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
     <style>
       /* CSS for map container */
       #map {
@@ -54,7 +68,8 @@
     <!-- Call the initMap function after Google Maps API is loaded -->
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxJvrodMZmejSbwGnMpnrICC36ZSGlqW8&callback=initMap"></script>
   </body>
-  </html>
+
+  
   
   <% if (product.location.address) { %>
     <p>Address: <%= product.location.address %></p>
@@ -62,5 +77,7 @@
   <% if (product.location.addressDesc) { %>
     <p>Address Description: <%= product.location.addressDesc %></p>
   <% } %>
+
+  <div id='calendar'></div>
 </body>
 </html>

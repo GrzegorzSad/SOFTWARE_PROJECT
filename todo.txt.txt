@@ -1,4 +1,4 @@
 todo:
-product detail view finish(add map)
 booking system
 review system
+search filters at least by availability

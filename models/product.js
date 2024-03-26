@@ -33,7 +33,22 @@ const productSchema = new mongoose.Schema({
     },
     address: { type: String, required: false }, // Optional: User can fill this later
     addressDesc: { type: String, required: false }
-  }
+  },
+  bookings: [{
+    startDate: {
+      type: Date,
+      required: true
+    },
+    endDate: {
+      type: Date,
+      required: true
+    },
+    bookedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User', // Assuming you have a User model
+      required: true
+    }
+  }]
 });
 
 productSchema.index({ name: 'text' }); // Needed for searches
