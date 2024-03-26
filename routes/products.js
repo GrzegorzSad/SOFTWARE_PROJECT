@@ -178,4 +178,41 @@ router.get('/:productId', async (req, res) => {
 
 //Delete
 
+
+// POST route to create a new booking
+router.post('/:productId/bookings', async (req, res) => {
+    try {
+        const productId = req.params.productId;
+        const { startDate, endDate, bookedBy } = req.body; // Assuming startDate, endDate, and bookedBy are provided in the request body
+
+        // Find the product by ID
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
+
+        // Create a new booking object
+        const booking = {
+            startDate: startDate,
+            endDate: endDate,
+            bookedBy: bookedBy
+        };
+
+        console.log(booking, "BOOOOOOOOOOOOOOOOOOOOOOOKING")
+
+        // Add the booking to the product's bookings array
+        product.bookings.push(booking);
+
+        // Save the updated product to the database
+        await product.save();
+
+        res.status(201).json(booking); // Return the created booking
+    } catch (error) {
+        console.error('Error creating booking:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+module.exports = router;
+
 module.exports = router;
