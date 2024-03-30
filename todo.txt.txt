@@ -1,7 +1,10 @@
 todo:
-booking system
 review system
+for dev purp ig just let anybody review for now
+and then get avg rating, review box and avg profile rating
+
+oh i gotta do the profile view where i get all their products
+
 search filters at least by availability
 
-for booking, check collisions, display booked dates, redirect to login if not logged in
-oh and make a payment page before the booking occurs
+make a payment page before the booking occurs

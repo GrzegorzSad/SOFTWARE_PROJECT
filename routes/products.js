@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Product = require('../models/product')
 const User = require('../models/user');
+const Review = require('../models/review');
 const multer = require('multer')
 const path = require('path');
 const { loggedIn } = require('../middleware');
@@ -159,6 +160,7 @@ router.get('/:productId', async (req, res) => {
     } catch (error) {
         console.error("Error fetching user:", error);
     }
+    
     try {
         const product = await Product.findById(req.params.productId).populate('userId');
         const bookedDates = product.bookings.map(booking => ({
@@ -170,10 +172,42 @@ router.get('/:productId', async (req, res) => {
             return res.status(404).send('Product not found');
         }
 
-        res.render('products/show', { product: product, userLocation: userLocation, bookedDates: bookedDates });
+        // Fetch reviews for the product
+        const reviews = await Review.find({ product: product._id }).populate('reviewer');
+
+        res.render('products/show', { product: product, userLocation: userLocation, bookedDates: bookedDates, reviews: reviews });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
+    }
+});
+
+//POST REVIEW (not making a seperate review file cos its just 1 route)
+
+router.post('/:productId/reviews', async (req, res) => {
+    try {
+        const { rating, text } = req.body;
+        const productId = req.params.productId;
+        const reviewer = req.session.userId
+
+        // Fetch the product to get its owner's ID
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        // Create the review with automatic population of productOwner field
+        const review = await Review.create({
+            rating,
+            text,
+            product: productId,
+            productOwner: product.userId,
+            reviewer
+        });
+
+        res.status(201).json(review);
+    } catch (err) {
+        res.status(400).json({ message: err.message });
     }
 });
 
