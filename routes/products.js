@@ -32,9 +32,9 @@ router.get('/', async (req, res) => {
         const user = await User.findById(req.session.userId);
         if (user) {
             userLocation = user.location;
-            //console.log(userLocation);
+            ////console.log(userLocation);
         } else {
-            //console.log("User not found");
+            ////console.log("User not found");
         }
     } catch (error) {
         console.error("Error fetching user:", error);
@@ -46,7 +46,7 @@ router.get('/', async (req, res) => {
     }
 
     // Ensure pinLocation is a valid array of coordinates
-    //console.log(pinLocation);
+    ////console.log(pinLocation);
 
     let products = []
 
@@ -71,7 +71,7 @@ router.get('/', async (req, res) => {
         const result = await Product.find(query)
             .populate('userId')
             .then(result => {
-                console.log(result); // populated documents
+                //console.log(result); // populated documents
                 products = result
             })
             .catch(err => {
@@ -82,7 +82,7 @@ router.get('/', async (req, res) => {
         //     products = await Product.find({}).populate('userId');
         // }
 
-        //console.log(products);
+        ////console.log(products);
 
 
         res.render('products', { products: products, userLocation: userLocation, pinLocation: pinLocation, range: range, q: req.query.q });
@@ -99,9 +99,9 @@ router.get('/new', loggedIn(), async (req, res) => {
         const user = await User.findById(req.session.userId); // Make sure userId is a valid ID
         if (user) {
             userLocation = user.location;
-            //console.log(userLocation);
+            ////console.log(userLocation);
         } else {
-            //console.log("User not found");
+            ////console.log("User not found");
         }
     } catch (error) {
         console.error("Error fetching user:", error);
@@ -152,21 +152,25 @@ router.get('/:productId', async (req, res) => {
         const user = await User.findById(req.session.userId);
         if (user) {
             userLocation = user.location;
-            //console.log(userLocation);
+            ////console.log(userLocation);
         } else {
-            //console.log("User not found");
+            ////console.log("User not found");
         }
     } catch (error) {
         console.error("Error fetching user:", error);
     }
     try {
         const product = await Product.findById(req.params.productId).populate('userId');
+        const bookedDates = product.bookings.map(booking => ({
+            start: booking.startDate.toISOString(),
+            end: booking.endDate.toISOString()
+        }));
 
         if (!product) {
             return res.status(404).send('Product not found');
         }
 
-        res.render('products/show', { product: product, userLocation: userLocation });
+        res.render('products/show', { product: product, userLocation: userLocation, bookedDates: bookedDates });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
@@ -180,7 +184,7 @@ router.get('/:productId', async (req, res) => {
 
 
 // POST route to create a new booking
-router.post('/:productId/bookings', async (req, res) => {
+router.post('/:productId/bookings', loggedIn(), async (req, res) => {
     try {
         const productId = req.params.productId;
         const { startDate, endDate, bookedBy } = req.body; // Assuming startDate, endDate, and bookedBy are provided in the request body
@@ -191,14 +195,29 @@ router.post('/:productId/bookings', async (req, res) => {
             return res.status(404).json({ error: 'Product not found' });
         }
 
+        // Check for overlapping bookings
+        const overlappingBooking = product.bookings.find(booking => {
+            const bookingStart = new Date(booking.startDate);
+            const bookingEnd = new Date(booking.endDate);
+            const newStart = new Date(startDate);
+            const newEnd = new Date(endDate);
+            return (
+                (newStart >= bookingStart && newStart < bookingEnd) || // New start date overlaps with existing booking
+                (newEnd > bookingStart && newEnd <= bookingEnd) || // New end date overlaps with existing booking
+                (newStart <= bookingStart && newEnd >= bookingEnd) // New booking completely overlaps existing booking
+            );
+        });
+
+        if (overlappingBooking) {
+            return res.status(400).json({ error: 'This date range overlaps with an existing booking.' });
+        }
+
         // Create a new booking object
         const booking = {
             startDate: startDate,
             endDate: endDate,
             bookedBy: bookedBy
         };
-
-        console.log(booking, "BOOOOOOOOOOOOOOOOOOOOOOOKING")
 
         // Add the booking to the product's bookings array
         product.bookings.push(booking);
@@ -212,7 +231,5 @@ router.post('/:productId/bookings', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
-
-module.exports = router;
 
 module.exports = router;

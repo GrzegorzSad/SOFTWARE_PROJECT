@@ -4,3 +4,4 @@ review system
 search filters at least by availability
 
 for booking, check collisions, display booked dates, redirect to login if not logged in
+oh and make a payment page before the booking occurs

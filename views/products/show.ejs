@@ -4,29 +4,9 @@
 <head>
   <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
   <script>
-
-    document.addEventListener('DOMContentLoaded', function () {
-      var calendarEl = document.getElementById('calendar');
-      var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        selectable: true, // Enable day selection
-        select: function (info) {
-          console.log('Selected start date:', info.startStr);
-          console.log('Selected end date:', info.endStr);
-          handleDateSelection(info); // Call handleDateSelection function when a date is selected
-        }
-      });
-      calendar.render();
-
-      function handleDateSelection(info) {
-        document.getElementById('startDate').value = info.startStr;
-        document.getElementById('endDate').value = info.endStr;
-      }
-    });
-
-
-
+    var bookedDates = <%- JSON.stringify(bookedDates) %>
   </script>
+  <script src="\js\bookingLogic.js"></script>
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -63,11 +43,11 @@
   <!-- Map container -->
   <div id="map"></div>
 
-  <script>
+  <script>  //this only needs to ever be this short to show one pin so ig it can stay here
     // JavaScript to initialize Google Map
     function initMap() {
       // Product coordinates
-      var productCoordinates = <%= JSON.stringify(product.location.coordinates) %>;
+      var productCoordinates = <%- JSON.stringify(product.location.coordinates) %>;
 
       // Create a map centered at the product coordinates
       var map = new google.maps.Map(document.getElementById("map"), {
