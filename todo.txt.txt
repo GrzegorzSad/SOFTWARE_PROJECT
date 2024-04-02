@@ -8,3 +8,7 @@ oh i gotta do the profile view where i get all their products
 search filters at least by availability
 
 make a payment page before the booking occurs
+
+make actual redirects and not json responses
+
+make profiles viewable links

@@ -184,7 +184,7 @@ router.get('/:productId', async (req, res) => {
 
 //POST REVIEW (not making a seperate review file cos its just 1 route)
 
-router.post('/:productId/reviews', async (req, res) => {
+router.post('/:productId/reviews', loggedIn(), async (req, res) => {
     try {
         const { rating, text } = req.body;
         const productId = req.params.productId;
@@ -205,7 +205,7 @@ router.post('/:productId/reviews', async (req, res) => {
             reviewer
         });
 
-        res.status(201).json(review);
+        res.redirect('back');
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
@@ -259,7 +259,7 @@ router.post('/:productId/bookings', loggedIn(), async (req, res) => {
         // Save the updated product to the database
         await product.save();
 
-        res.status(201).json(booking); // Return the created booking
+        res.redirect('back');
     } catch (error) {
         console.error('Error creating booking:', error);
         res.status(500).json({ error: 'Internal server error' });
