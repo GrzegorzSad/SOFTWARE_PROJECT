@@ -26,8 +26,8 @@
   <h1>
     <%= product.name %> Detail
   </h1>
-  <p>User: <%= product.userId.username %>
-  </p>
+  <p>User: <a href="../users/show/<%= product.userId._id %>"><%= product.userId.username %></a></p>
+
   <p>Description: <%= product.description %>
   </p>
   <p>Price: <%= product.price %>
