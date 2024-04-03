@@ -9,6 +9,43 @@
         <div class="profile-image">
             <img src="<%= user.profileImgUrl %>" alt="Profile Image">
         </div>
+        <h2>Reviews</h2>
+        <a> Average Rating </a>
+        <a> <%= averageRating %> </a>
+        <ul>
+          <% reviews.forEach(review => { %>
+            <li>
+              <p>Rating: <%= review.rating %>/5</p>
+              <p>Review: <%= review.text %></p>
+              <p>Reviewed By: <%= review.reviewer.username %></p>
+            </li>
+          <% }); %>
+        </ul>
+
+        <% if (products.length===0) { %>
+            <p>No products available.</p>
+            <% } else { %>
+              <ul>
+                <% products.forEach(product=> { %>
+                  <li>
+                    <h2>
+                      <a href="/products/<%= product._id %>"><%= product.name %></a>
+                    </h2>
+                    <p>Description: <%= product.description %>
+                    </p>
+                    <p>Price: <%= product.price %>
+                    </p>
+                    <!-- can delete when i fix the data -->
+                    <% if (product.userId && product.userId.username){%>
+                      </p>
+                      <%}%>
+                        <!-- Display images for the product -->
+                        <img src="<%= product.images[0]%>">
+                  </li>
+                  <% }) %>
+              </ul>
+              <% } %>
+        
         <form action="/users/logout" method="get">
             <button type="submit">Logout</button>
         </form>

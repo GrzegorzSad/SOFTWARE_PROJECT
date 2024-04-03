@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const User = require('../models/user')
+const Review = require('../models/review')
+const Product = require('../models/product')
 const multer = require('multer')
 const path = require('path')
 const { checkRole } = require('../middleware');
@@ -148,7 +150,22 @@ router.get('/show/:userId', async (req, res) => {
       if (!user) {
           return res.status(404).send('User not found');
       }
-      res.render('users/show', { user });
+      // Fetch products created by the user
+
+      const products = await Product.find({ userId:user._id })
+
+
+      // Fetch reviews for the product
+      const reviews = await Review.find({ productOwner: userId }).populate('reviewer');
+
+      // Calculate average rating
+      let totalRating = 0;
+      for (const review of reviews) {
+          totalRating += review.rating;
+      }
+      const averageRating = reviews.length > 0 ? totalRating / reviews.length : 0;
+
+      res.render('users/show', { user , reviews, averageRating, products});
   } catch (error) {
       console.error("Error fetching user:", error);
       res.status(500).send('Internal Server Error');

@@ -95,6 +95,8 @@
 
 
         <h2>Reviews</h2>
+        <a> Average Rating </a>
+        <a> <%= averageRating %> </a>
   <ul>
     <% reviews.forEach(review => { %>
       <li>
@@ -104,6 +106,7 @@
       </li>
     <% }); %>
   </ul>
+  
 
   <!-- Form for Leaving a Review -->
   <h2>Leave a Review</h2>

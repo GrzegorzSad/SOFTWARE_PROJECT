@@ -160,7 +160,7 @@ router.get('/:productId', async (req, res) => {
     } catch (error) {
         console.error("Error fetching user:", error);
     }
-    
+
     try {
         const product = await Product.findById(req.params.productId).populate('userId');
         const bookedDates = product.bookings.map(booking => ({
@@ -175,7 +175,13 @@ router.get('/:productId', async (req, res) => {
         // Fetch reviews for the product
         const reviews = await Review.find({ product: product._id }).populate('reviewer');
 
-        res.render('products/show', { product: product, userLocation: userLocation, bookedDates: bookedDates, reviews: reviews });
+        let totalRating = 0;
+        for (const review of reviews) {
+            totalRating += review.rating;
+        }
+        const averageRating = reviews.length > 0 ? totalRating / reviews.length : 0;
+
+        res.render('products/show', { product: product, userLocation: userLocation, bookedDates: bookedDates, reviews: reviews, averageRating });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
