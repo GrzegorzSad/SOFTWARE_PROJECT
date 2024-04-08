@@ -1,6 +1,16 @@
-<% if (userId !== undefined) { %>
-    <a href="/users/show/<%= userId %>"><%= username %></a>
+<link rel="stylesheet" href="/css/main.css">
+
+<% if (userId !==undefined) { %>
+  <li class="nav-item">
+    <a class="nav-link active" href="/users/show/<%= userId %>">
+      <%= username %>
+    </a>
+  </li>
   <% } else { %>
-    <a href="/users/login">Log In</a>
-    <a href="/users/new">Sign Up</a>
-  <% } %>
+    <li class="nav-item">
+      <a class="nav-link active" href="/users/login">Log In</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" href="/users/new">Sign Up</a>
+    </li>
+    <% } %>
