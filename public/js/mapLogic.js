@@ -37,6 +37,12 @@ function initMap() {
   });
 
   // Initialize the circle with an initial radius
+  var radiusValue = 0; // Default radius value
+
+  var radiusSlider = document.getElementById('radiusSlider');
+  if (radiusSlider) {
+      radiusValue = parseFloat(radiusSlider.value) * 1000; // Convert to meters
+  }
   circle = new google.maps.Circle({
     strokeColor: "#FF0000",
     strokeOpacity: 0.8,
@@ -45,7 +51,8 @@ function initMap() {
     fillOpacity: 0.35,
     map: map,
     center: { lat: defaultLat, lng: defaultLng },
-    radius: parseFloat(document.getElementById('radiusSlider').value) * 1000, // Convert to meters
+    radius: radiusValue
+
 });
 
 // Attach an event listener to the range input to update the circle radius
@@ -122,27 +129,21 @@ function createProductMarkers(products) {
 function updateAddressFromMarker(lat, lng) {
   var geocoder = new google.maps.Geocoder();
   var latlng = { lat: parseFloat(lat), lng: parseFloat(lng) };
-  document.getElementById('lat').value = latlng.lat;
-  document.getElementById('lng').value = latlng.lng;
-  console.log(latlng,"hererererere")
 
   geocoder.geocode({ 'location': latlng }, function (results, status) {
-    if (status === 'OK') {
-      if (results[0]) {
-        var address = results[0].formatted_address;
-        document.getElementById('addressInput').value = address; // Update the address input
-        document.getElementById('address').value = address; // Update hidden address field if needed
-
-        // Update the display above the Address Description field
-        document.getElementById('markerAddressDisplay').innerText = address;
+      if (status === 'OK') {
+          if (results[0]) {
+              var address = results[0].formatted_address;
+              document.getElementById('addressInput').value = address; // Update the address input
+              document.getElementById('markerAddressDisplay').innerText = address; // Update the address display
+          } else {
+              window.alert('No results found');
+              document.getElementById('markerAddressDisplay').innerText = 'No results found';
+          }
       } else {
-        window.alert('No results found');
-        document.getElementById('markerAddressDisplay').innerText = 'No results found';
+          window.alert('Geocoder failed due to: ' + status);
+          document.getElementById('markerAddressDisplay').innerText = 'Geocoder failed';
       }
-    } else {
-      window.alert('Geocoder failed due to: ' + status);
-      document.getElementById('markerAddressDisplay').innerText = 'Geocoder failed';
-    }
   });
 }
 document.getElementById('userForm').addEventListener('submit', function () {

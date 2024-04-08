@@ -1,62 +1,72 @@
 <h2>Create Product</h2>
 <form action="/products/" method="POST" enctype="multipart/form-data">
-    <label for="name">Name:</label><br>
-    <input type="text" id="name" name="name" value="<%= product.name %>"><br>
-    <label for="description">Description:</label><br>
-    <textarea id="description" name="description"><%= product.description %></textarea><br>
-    <label for="price">Price:</label><br>
-    <input type="number" id="price" name="price" step="0.01" value="<%= product.price %>"><br>
-    <!-- <label for="userId">User ID:</label><br> -->
-    <input type="hidden" id="userId" name="userId" value="<%= userId %>"><br><br>
-    <label for="images">Images:</label><br>
-    <input type="file" id="images" name="images" multiple><br><br>
+  <label for="name">Name:</label><br>
+  <input type="text" id="name" name="name" value="<%= product.name %>"><br>
+  <label for="description">Description:</label><br>
+  <textarea id="description" name="description"><%= product.description %></textarea><br>
+  <label for="price">Price:</label><br>
+  <input type="number" id="price" name="price" step="0.01" value="<%= product.price %>"><br>
+  <!-- <label for="userId">User ID:</label><br> -->
+  <input type="hidden" id="userId" name="userId" value="<%= userId %>"><br><br>
+  <label for="images">Images:</label><br>
+  <input type="file" id="images" name="images" multiple><br><br>
 
-        <!-- Hidden fields for latitude and longitude -->
-        <input type="hidden" id="lat" name="lat">
-        <input type="hidden" id="lng" name="lng">
-        <input type="hidden" id="address" name="address">
+  <!-- Hidden fields for latitude and longitude -->
+  <input type="hidden" id="lat" name="lat" value="">
+  <input type="hidden" id="lng" name="lng" value="">
+  <input type="hidden" id="address" name="address">
 
-    <style>
-      /* Always set the map height explicitly to define the size of the div
-          * element that contains the map. */
-      #map {
-        height: 300px;
-      }
-  
-      /* Optional: Makes the sample page fill the window. */
-      html,
-      body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-    </style>
-  
-    <div>
-      <input type="text" id="addressInput" placeholder="Enter an address">
-      <button type="button" onclick="geocodeAddress()">Geocode</button>
-    </div>
-    <div id="map"></div>
+  <style>
+    /* Always set the map height explicitly to define the size of the div
+                * element that contains the map. */
+    #map {
+      height: 300px;
+    }
 
-    <% if (userLocation) { %>
-      <script>
-        // Safely initialize userLocation as a global JavaScript variable
-        var userLocation = <%- JSON.stringify(userLocation) %>;
-      </script>
-      <% } %>
-    
-    <script src="/js/mapLogic.js"></script>
-  
-    <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxJvrodMZmejSbwGnMpnrICC36ZSGlqW8&callback=initMap"></script>
-  
-    <div id="markerAddressDisplay">Address will be shown here</div>
-    <label for="addressDesc">Address Description:</label>
-    <input type="text" id="addressDesc" name="addressDesc"><br>
-  
+    /* Optional: Makes the sample page fill the window. */
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
 
-    <br>
+  <div>
+    <input type="text" id="addressInput" placeholder="Enter an address">
+    <button type="button" onclick="geocodeAddress()">Geocode</button>
+  </div>
+  <div id="map"></div>
 
-    <button type="submit">Submit</button>
-  </form>
-  
+  <% if (userLocation) { %>
+    <script>
+      // Safely initialize userLocation as a global JavaScript variable
+      var userLocation = <% - JSON.stringify(userLocation) %>;
+    </script>
+    <% } %>
+
+    <script>
+      // Safely initialize userLocation as a global JavaScript variable
+      var pinLocation = [53.349853, -6.2603]; // Fallback latitude
+
+    </script>
+
+
+
+      <script src="/js/mapLogic.js"></script>
+
+      <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxJvrodMZmejSbwGnMpnrICC36ZSGlqW8&callback=initMap"></script>
+
+
+
+
+      <div id="markerAddressDisplay">Address will be shown here</div>
+      <label for="addressDesc">Address Description:</label>
+      <input type="text" id="addressDesc" name="addressDesc"><br>
+
+
+      <br>
+
+      <button type="submit">Submit</button>
+</form>

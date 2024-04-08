@@ -1,5 +1,8 @@
 todo:
 
+SOMEHOW LOCATIONS BROKE ON CREATING NEW STUF AHGHGGHGHGHGHGHGHGHGHGHhg
+ok the whole circle thingy being there crashes it, i think i just make another maplogic xd
+
 for dev purp ig just let anybody review for now
 
 search filters at least by availability
