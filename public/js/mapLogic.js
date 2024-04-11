@@ -40,9 +40,7 @@ function initMap() {
   var radiusValue = 0; // Default radius value
 
   var radiusSlider = document.getElementById('radiusSlider');
-  if (radiusSlider) {
-      radiusValue = parseFloat(radiusSlider.value) * 1000; // Convert to meters
-  }
+  radiusValue = parseFloat(radiusSlider.value) * 1000; // Convert to meters
   circle = new google.maps.Circle({
     strokeColor: "#FF0000",
     strokeOpacity: 0.8,
