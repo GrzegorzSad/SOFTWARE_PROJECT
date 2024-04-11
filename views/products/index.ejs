@@ -1,106 +1,93 @@
-<div class='container-xl py-5'>
-  <form action="/products" method="GET">
-    <h1>What Are You Looking For?</h1>
-    <input type="text" name="q" id="searchInput" placeholder="Search products..." value="<%= q%>">
+<form action="/products" method="GET">
+  <h1>Product Search</h1>
+  <input type="text" name="q" id="searchInput" placeholder="Search products..." value="<%= q%>">
+  
+  <input type="hidden" id="address" name="address">
+  <input type="hidden" id="lat" name="lat" value="">
+  <input type="hidden" id="lng" name="lng" value="">
 
-    <input type="hidden" id="address" name="address">
-    <input type="hidden" id="lat" name="lat" value="">
-    <input type="hidden" id="lng" name="lng" value="">
+  <input type="range" id="radiusSlider" name="range" min="1" max="50" value="<%= range%>">
 
-    <input type="range" id="radiusSlider" name="range" min="1" max="50" value="<%= range%>">
+  <button type="submit">Search</button>
+</form>
 
-    <button type="submit">Search</button>
-  </form>
-
-
-  <div class="row">
-
-    <div class="col-xl">
-      <style>
-        /* Always set the map height explicitly to define the size of the div
+<style>
+  /* Always set the map height explicitly to define the size of the div
         * element that contains the map. */
-        #map {
-          height: 500px;
-        }
+  #map {
+    height: 300px;
+  }
 
-        /* Optional: Makes the sample page fill the window. */
-        html,
-        body {
-          height: 100%;
-          margin: 0;
-          padding: 0;
-        }
-      </style>
+  /* Optional: Makes the sample page fill the window. */
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+</style>
 
-      <div>
-        <input type="text" id="addressInput" placeholder="Enter an address">
-        <button type="button" onclick="geocodeAddress()">Geocode</button>
-      </div>
-      <div id="map"></div>
+<div>
+  <input type="text" id="addressInput" placeholder="Enter an address">
+  <button type="button" onclick="geocodeAddress()">Geocode</button>
+</div>
+<div id="map"></div>
 
-      <% if (userLocation) { %>
-        <script>
-          // Safely initialize userLocation as a global JavaScript variable
-          var userLocation = <% - JSON.stringify(userLocation) %>;
-        </script>
-        <% } %>
+<% if (userLocation) { %>
+  <script>
+    // Safely initialize userLocation as a global JavaScript variable
+    var userLocation = <%- JSON.stringify(userLocation) %>;
+  </script>
+  <% } %>
 
-          <% if (pinLocation) { %>
-            <script>
-              // Safely initialize userLocation as a global JavaScript variable
-              var pinLocation = <% - JSON.stringify(pinLocation) %>;
-              pinLocation = pinLocation.reverse()
-            </script>
-            <% } %>
+    <% if (pinLocation) { %>
+      <script>
+        // Safely initialize userLocation as a global JavaScript variable
+        var pinLocation = <%- JSON.stringify(pinLocation) %>;
+        pinLocation = pinLocation.reverse()
+      </script>
+      <% } %>
 
-              <% if (products) { %>
-                <script>
-                  // Safely initialize products as a global JavaScript variable
-                  var products = <% - JSON.stringify(products) %>;
-                </script>
-                <% } %>
-
-                  <script src="/js/mapLogic.js"></script>
-
-                  <script async defer
-                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxJvrodMZmejSbwGnMpnrICC36ZSGlqW8&callback=initMap"></script>
-
-
-
-
-                  <div id="markerAddressDisplay">Address will be shown here</div>
-    </div>
-    <div class="col-xl">
-
-
-      <% if (products.length===0) { %>
-        <p>No products available.</p>
-        <% } else { %>
-          <ul>
-            <% products.forEach(product=> { %>
-              <li>
-                <h2>
-                  <a href="/products/<%= product._id %>">
-                    <%= product.name %>
-                  </a>
-                </h2>
-                <p>Description: <%= product.description %>
-                </p>
-                <p>Price: <%= product.price %>
-                </p>
-                <!-- can delete when i fix the data -->
-                <% if (product.userId && product.userId.username){%>
-                  <p>User: <%= product.userId.username %>
-                  </p>
-                  <%}%>
-                    <!-- Display images for the product -->
-                    <img src="<%= product.images[0]%>">
-              </li>
-              <% }) %>
-          </ul>
+        <% if (products) { %>
+          <script>
+            // Safely initialize products as a global JavaScript variable
+            var products = <%- JSON.stringify(products) %>;
+          </script>
           <% } %>
 
-    </div>
-  </div>
+            <script src="/js/mapLogic.js"></script>
 
-</div>
+            <script async defer
+              src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxJvrodMZmejSbwGnMpnrICC36ZSGlqW8&callback=initMap"></script>
+
+
+
+
+            <div id="markerAddressDisplay">Address will be shown here</div>
+
+
+
+            <% if (products.length===0) { %>
+              <p>No products available.</p>
+              <% } else { %>
+                <ul>
+                  <% products.forEach(product=> { %>
+                    <li>
+                      <h2>
+                        <a href="/products/<%= product._id %>"><%= product.name %></a>
+                      </h2>
+                      <p>Description: <%= product.description %>
+                      </p>
+                      <p>Price: <%= product.price %>
+                      </p>
+                      <!-- can delete when i fix the data -->
+                      <% if (product.userId && product.userId.username){%>
+                        <p>User: <%= product.userId.username %>
+                        </p>
+                        <%}%>
+                          <!-- Display images for the product -->
+                          <img src="<%= product.images[0]%>">
+                    </li>
+                    <% }) %>
+                </ul>
+                <% } %>
