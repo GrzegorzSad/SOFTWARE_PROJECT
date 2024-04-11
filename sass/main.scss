@@ -1,2 +1,63 @@
 @import "../node_modules/bootstrap/scss/functions";
+
+
+$enable-shadows: true;
+$enable-negative-margins: true;
+$enable-gradients: true;
+
+$spacer: 1rem;
+$spacers: (
+    0: 0,
+    1: $spacer * 0.1,
+    2: $spacer * 0.33,
+    3: $spacer,
+    4: $spacer * 2,
+    5: $spacer * 3,
+    10: $spacer * 6,
+    20: $spacer * 12,
+);
+
+
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+
+$custom-colors: (
+    // "primary": #92CCCE,
+    // "secondary": #DB925F,
+    // "dark": #495E63,
+    // "light": #FAF9F9
+    "primary": #e9fbff,
+    "secondary": #dcc3c3,
+    "dark": #495E63,
+    "light": #FAF9F9,
+    "green": rgb(230, 237, 224),
+    "black": #000000,
+    "gray": #f2eae7,
+);
+
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+
+@each $key, $val in $theme-colors {
+    .bg-#{$key} {
+        background-color: $val;
+    }
+
+    .bg-#{$key}-light {
+        background-color: tint-color($val, 50%);
+    }
+
+    .text-#{$key}-light {
+        color: tint-color($val, 50%);
+    }
+
+    .bg-#{$key}-dark {
+        background-color: shade-color($val, 20%);
+    }
+
+    .text-#{$key}-dark {
+        color: shade-color($val, 20%);
+    }
+}
+
 @import "../node_modules/bootstrap/scss/bootstrap.scss";

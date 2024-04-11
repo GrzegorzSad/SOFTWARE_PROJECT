@@ -10,6 +10,9 @@ function initMap() {
   var defaultLat = 53.3498; // Fallback latitude
   var defaultLng = -6.2603; // Fallback longitude
 
+  document.getElementById('lat').value = defaultLat;
+  document.getElementById('lng').value = defaultLng;
+
   // First, check if pinLocation is defined and has coordinates
   if (pinLocation && pinLocation[0] && pinLocation[1]) {
     defaultLat = +pinLocation[0];

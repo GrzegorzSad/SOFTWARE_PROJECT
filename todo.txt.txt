@@ -1,11 +1,8 @@
 todo:
 
-SOMEHOW LOCATIONS BROKE ON CREATING NEW STUF AHGHGGHGHGHGHGHGHGHGHGHhg
-ok the whole circle thingy being there crashes it, i think i just make another maplogic xd
 
-for dev purp ig just let anybody review for now
-
-search filters at least by availability
-
-make a payment page before the booking occurs
-
+ASK
+what to focus on?
+1. search filters
+2. payment system or at least transactions db
+3. i dunno what to do about reviews, ig leave them like they are rn
