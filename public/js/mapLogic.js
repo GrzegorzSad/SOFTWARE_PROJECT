@@ -105,7 +105,9 @@ function geocodeAddress() {
       var lat = location.lat();
       var lng = location.lng();
       updateAddressFromMarker(lat, lng); // This will also update 'markerAddressDisplay'
-      circle.setCenter({ lat: lat, lng: lng });
+      if(circle){
+        circle.setCenter({ lat: lat, lng: lng });
+      }
 
       // Since 'updateAddressFromMarker' already sets the value of hidden inputs, 
       // you don't need to repeat it here unless you're handling errors differently

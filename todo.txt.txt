@@ -1,8 +1,5 @@
 todo:
 
-
-ASK
-what to focus on?
 1. search filters
 2. payment system or at least transactions db
 3. i dunno what to do about reviews, ig leave them like they are rn
