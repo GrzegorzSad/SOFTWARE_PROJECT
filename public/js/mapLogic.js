@@ -115,16 +115,25 @@ function geocodeAddress() {
 }
 
 function createProductMarkers(products) {
-
   products.forEach(function (product) {
-    console.log(product, 'HERE');
-    let productMarker = new google.maps.Marker({
+    // Construct the content for the InfoWindow
+    let content = '<div>' +
+                    '<h2><a href="/products/' + product._id + '">' + product.name + '</a></h2>' +
+                    '<p>' + product.description + '</p>' +
+                    // '<img src="' + product.images[0] + '" alt="' + product.name + '">' +
+                  '</div>';
+    let infoWindow = new google.maps.InfoWindow({
       position: { lat: product.location.coordinates[1], lng: product.location.coordinates[0] },
-      map: map,
-      title: product.name
+      content: content,
+      disableAutoPan: true // Disable auto-panning
     });
+
+    // Open the InfoWindow immediately when it's created
+    infoWindow.open(map);
+
   });
 }
+
 
 
 function updateAddressFromMarker(lat, lng) {
