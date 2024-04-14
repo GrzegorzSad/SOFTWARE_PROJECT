@@ -1,53 +1,76 @@
-<div class="container">
-    <h1>User Profile</h1>
-    <div class="user-profile">
-        <div class="user-info">
-            <p><strong>Username:</strong> <%= user.username %></p>
-            <p><strong>Email:</strong> <%= user.email %></p>
-            <!-- Add any other user details you want to display -->
-        </div>
-        <div class="profile-image">
-            <img src="<%= user.profileImgUrl %>" alt="Profile Image">
-        </div>
-        <h2>Reviews</h2>
-        <a> Average Rating </a>
-        <a> <%= averageRating %> </a>
-        <ul>
-          <% reviews.forEach(review => { %>
-            <li>
-              <p>Rating: <%= review.rating %>/5</p>
-              <p>Review: <%= review.text %></p>
-              <p>Reviewed By: <%= review.reviewer.username %></p>
-            </li>
-          <% }); %>
-        </ul>
-
-        <% if (products.length===0) { %>
-            <p>No products available.</p>
-            <% } else { %>
-              <ul>
-                <% products.forEach(product=> { %>
-                  <li>
-                    <h2>
-                      <a href="/products/<%= product._id %>"><%= product.name %></a>
-                    </h2>
-                    <p>Description: <%= product.description %>
-                    </p>
-                    <p>Price: <%= product.price %>
-                    </p>
-                    <!-- can delete when i fix the data -->
-                    <% if (product.userId && product.userId.username){%>
-                      </p>
-                      <%}%>
-                        <!-- Display images for the product -->
-                        <img src="<%= product.images[0]%>">
-                  </li>
-                  <% }) %>
-              </ul>
-              <% } %>
-        
-        <form action="/users/logout" method="get">
-            <button type="submit">Logout</button>
-        </form>
+<div class="container-fluid bg-primary py-3">
+  <div class="container-xl">
+    <div class="container-xl d-flex">
+      <div class="flex-fill">
+        <h1>
+          <%= user.username %>
+        </h1>
+        <a>
+          <%= user.email %>
+        </a>
+        <!-- Add any other user details you want to display -->
+      </div>
+      <div class="profile-image ">
+        <img src="<%= user.profileImgUrl %>" alt="Profile Image">
+      </div>
     </div>
+  </div>
+</div>
+<div class="container-fluid py-3">
+  <div class="container-xl">
+    <h2>Reviews</h2>
+    <br>
+    <a> Average Rating </a>
+    <a>
+      <%= averageRating %>
+    </a>
+
+      <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
+        <% reviews.forEach(review => { %>
+          <div class="g-5">
+              <div class="card-body">
+                  <p class="card-text"><%= review.text %></p>
+                  <p class="card-text"><%= review.rating %>/5</p>
+                  <p class="card-text">By: <%= review.reviewer.username %></p>
+              </div>
+          </div>
+      <% }); %>
+      </div>
+
+  </div>
+</div>
+
+<div class="container-fluid py-3 bg-primary">
+  <div class="container-xl">
+    <h2>Products</h2>
+    <% if (products.length===0) { %>
+      <p>No products available.</p>
+      <% } else { %>
+        <div class="row row-cols-2 row-cols-md-6 row-cols-xl-8">
+          <% products.forEach(product=> { %>
+            <div class="col">
+              <img class="card-img-top" src="<%= product.images[0]%>">
+              <h2>
+                <a href="/products/<%= product._id %>">
+                  <%= product.name %>
+                </a>
+              </h2>
+              <p>Description: <%= product.description %>
+              </p>
+              <p>Price: <%= product.price %>
+              </p>
+              <p>User: <%= product.userId.username %>
+              </p>
+            </div>
+            <% }) %>
+              <% } %>
+        </div>
+        <form action="/users/logout" method="get">
+          <button type="submit" class="btn btn-primary">Logout</button>
+        </form>
+  </div>
+  
+</div>
+
+</div>
 </div>

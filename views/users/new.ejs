@@ -1,60 +1,71 @@
-<h1>Create User</h1>
 
-<form action="/users" method="post">
-  <label for="username">Username:</label>
-  <input type="text" id="username" name="username" required><br>
 
-  <label for="email">Email:</label>
-  <input type="email" id="email" name="email" required><br>
+<div class="container my-5">
+  <h1>Create User</h1>
+  <form action="/users" method="post">
+      <div class="form-group">
+          <label for="username">Username:</label>
+          <input type="text" id="username" name="username" class="form-control" required>
+      </div>
 
-  <label for="password">Password:</label>
-  <input type="password" id="password" name="password" required><br>
+      <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" class="form-control" required>
+      </div>
 
-  <label for="profileImgUrl">Profile Image:</label>
-  <input type="file" id="image"><br><br>
+      <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" class="form-control" required>
+      </div>
 
-  <label for="role">Role: (WILL BE DELETED AFTER DEVELOPMENT)</label>
-  <select id="role" name="role">
-    <option value="user" selected>User</option>
-    <option value="admin">Admin</option>
-  </select>
+      <div class="form-group">
+          <label for="profileImgUrl">Profile Image:</label>
+          <input type="file" id="image" class="form-control-file">
+      </div>
 
-  <style>
-    /* Always set the map height explicitly to define the size of the div
-        * element that contains the map. */
-    #map {
-      height: 300px;
-    }
+      <div class="form-group">
+          <label for="role">Role:</label>
+          <select id="role" name="role" class="form-control">
+              <option value="user" selected>User</option>
+              <option value="admin">Admin</option>
+          </select>
+      </div>
 
-    /* Optional: Makes the sample page fill the window. */
-    html,
-    body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
-  </style>
+      <div class="form-group">
+          <input type="text" id="addressInput" class="form-control" placeholder="Enter an address">
+          <button type="button" class="btn btn-primary mt-2" onclick="geocodeAddress()">Geocode</button>
+      </div>
+      <style>
+        /* Always set the map height explicitly to define the size of the div
+            * element that contains the map. */
+        #map {
+          height: 300px;
+        }
+    
+        /* Optional: Makes the sample page fill the window. */
+        html,
+        body {
+          height: 100%;
+          margin: 0;
+          padding: 0;
+        }
+      </style>
+      <div id="map" class="mb-3"></div>
+      
+      <script src="/js/mapLogicNoCircle.js"></script>
+      <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxJvrodMZmejSbwGnMpnrICC36ZSGlqW8&callback=initMap"></script>
 
-  <div>
-    <input type="text" id="addressInput" placeholder="Enter an address">
-    <button type="button" onclick="geocodeAddress()">Geocode</button>
-  </div>
-  <div id="map"></div>
-  
-  <script src="/js/mapLogicNoCircle.js"></script>
+      <div id="markerAddressDisplay" class="mb-3">Address will be shown here</div>
+      
+      <div class="form-group">
+          <label for="addressDesc">Address Description:</label>
+          <input type="text" id="addressDesc" name="addressDesc" class="form-control">
+      </div>
 
-  <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxJvrodMZmejSbwGnMpnrICC36ZSGlqW8&callback=initMap"></script>
+      <input type="hidden" id="lat" name="lat">
+      <input type="hidden" id="lng" name="lng">
+      <input type="hidden" id="address" name="address">
 
-  <div id="markerAddressDisplay">Address will be shown here</div>
-  <label for="addressDesc">Address Description:</label>
-  <input type="text" id="addressDesc" name="addressDesc"><br>
-
-  <!-- Hidden fields for latitude and longitude -->
-  <input type="hidden" id="lat" name="lat">
-  <input type="hidden" id="lng" name="lng">
-  <input type="hidden" id="address" name="address">
-  <br>
-
-  <button type="submit">Create User</button>
-</form>
+      <button type="submit" class="btn btn-primary">Create User</button>
+  </form>
+</div>
