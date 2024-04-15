@@ -29,7 +29,7 @@ function initMap() {
 
   map = new google.maps.Map(document.getElementById('map'), {
     center: { lat: defaultLat, lng: defaultLng },
-    zoom: 14
+    zoom: 11
   });
 
   marker = new google.maps.Marker({

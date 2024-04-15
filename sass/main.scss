@@ -22,17 +22,20 @@ $spacers: (
 @import "../node_modules/bootstrap/scss/mixins";
 
 $custom-colors: (
-    // "primary": #92CCCE,
-    // "secondary": #DB925F,
-    // "dark": #495E63,
-    // "light": #FAF9F9
     "primary": #e9fbff,
     "secondary": #dcc3c3,
     "dark": #495E63,
     "light": #FAF9F9,
-    "green": rgb(230, 237, 224),
+    "green": #e6ede0,
     "black": #000000,
     "gray": #f2eae7,
+    // "primary": #ffc0ad,
+    // "secondary": #2ca9cc,
+    // "dark": #276678,
+    // "light": #FAF9F9,
+    // "green": rgb(230, 237, 224),
+    // "black": #000000,
+    // "gray": #f2eae7,
 );
 
 $theme-colors: map-merge($theme-colors, $custom-colors);

@@ -11,14 +11,14 @@
 
 
 
-  <button type="submit" class="btn btn-primary">Search</button>
+  <button type="submit" class="btn btn-black text-light">Search</button>
 
 
 </div>
 
-<div class="d-flex col-md-8 col-sm-12 col-xl-6 my-3">
-<a>distance   </a> <br></br>
-<input class="flex-fill" type="range" id="radiusSlider" name="range" min="1" max="50" value="<%= range%>">
+<div class="col-md-8 col-sm-12 col-xl-6 my-3">
+  <label for="radiusSlider" class="form-label">distance 1 to 50 km</label>
+  <input class="form-range" type="range" id="radiusSlider" name="range" min="1" max="50" value="<%= range%>">
 </div>
 
 </form>
@@ -26,7 +26,7 @@
   /* Always set the map height explicitly to define the size of the div
         * element that contains the map. */
   #map {
-    height: 600px;
+    height: 100px;
   }
 
   /* Optional: Makes the sample page fill the window. */
@@ -40,14 +40,14 @@
 
 </div>
 <div class="container-fluid row">
-  <div class="col-sm-6">
+  <div class="col-sm-6 ">
 
-<div id="map"></div>
+<div class="vh-100" id="map"></div>
 <div class="my-3">
   <h1>Where are you?</h1>
   <div class="d-flex">
   <input class="flex-fill" type="text" id="addressInput" placeholder="Enter an address">
-  <button type="button" class="btn btn-primary" onclick="geocodeAddress()">Find Adress</button>
+  <button type="button" class="btn btn-black text-light" onclick="geocodeAddress()">Find Adress</button>
 </div>
 </div>
 
@@ -94,13 +94,13 @@
                     <div class="col">
                       <img class="card-img-top" src="<%= product.images[0]%>">
                       <h2>
-                        <a href="/products/<%= product._id %>"><%= product.name %></a>
+                        <a class="link-black link-underline link-underline-opacity-0" href="/products/<%= product._id %>"><%= product.name %></a>
                       </h2>
-                      <p>Description: <%= product.description %>
+                      <p><%= product.description %>
                       </p>
-                      <p>Price: <%= product.price %>
+                      <p><%= product.price %> Euro/day
                       </p>
-                      <p>User: <%= product.userId.username %>
+                      <p>by: <%= product.userId.username %>
                       </p>
                     </div>
                     <% }) %>

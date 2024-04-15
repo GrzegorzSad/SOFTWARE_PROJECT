@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 let pinLocation = [];
-let range = 3;
+let range = 1;
 
 router.get('/', async (req, res) => {
     pinLocation = [+req.query.lng, +req.query.lat]
