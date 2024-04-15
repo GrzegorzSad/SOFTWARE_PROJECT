@@ -79,7 +79,7 @@ document.getElementById('radiusSlider').addEventListener('input', function () {
   if (userLocation && userLocation.address) {
     document.getElementById('addressInput').value = userLocation.address;
     document.getElementById('address').value = userLocation.address;
-    document.getElementById('markerAddressDisplay').innerText = userLocation.address;
+    //document.getElementById('markerAddressDisplay').innerText = userLocation.address;
   }
 
   // Example usage within initMap or after product data is fetched
