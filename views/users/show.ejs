@@ -1,17 +1,19 @@
-<div class="container-fluid bg-primary py-3">
+<div class="container-fluid bg-secondary py-3">
   <div class="container-xl">
-    <div class="container-xl d-flex">
-      <div class="flex-fill">
-        <h1>
-          <%= user.username %>
-        </h1>
-        <a>
-          <%= user.email %>
-        </a>
-        <!-- Add any other user details you want to display -->
-      </div>
-      <div class="profile-image ">
-        <img src="<%= user.profileImgUrl %>" alt="Profile Image">
+    <div class="container-xl ">
+      <div class="row">
+        <div class="col-10">
+          <h1>
+            <%= user.username %>
+          </h1>
+          <a>
+            <%= user.email %>
+          </a>
+          <!-- Add any other user details you want to display -->
+        </div>
+        <div class="col-2">
+          <img class="col-8" src="<%= user.profileImgUrl %>" alt="Profile Image">
+        </div>
       </div>
     </div>
   </div>
@@ -19,7 +21,7 @@
 
 <div class="container-fluid py-3">
   <div class="container-xl mt-3">
-    <h3>Reviews</h3>
+    <h3>Reviews:</h3>
     <br>
     <a> Average Rating </a>
     <a>
@@ -40,11 +42,14 @@
                           <p class="card-text">
                             <%= review.text %>
                           </p>
-                          <p class="card-text">
+                          <h4 class="card-text">
                             <%= review.rating %>/5
-                          </p>
-                          <p class="card-text">By: <%= review.reviewer.username %>
-                          </p>
+                          </h4>
+                          <a class="link-black link-underline link-underline-opacity-0"
+                            href="./<%= review.reviewer._id%>">
+                            <p class="card-text">By: <%= review.reviewer.username %>
+                            </p>
+                          </a>
                         </div>
                       </div>
                       <% if((index + 1) % 4===0 || (index + 1)===reviews.length) { %>
@@ -68,6 +73,7 @@
 
   </div>
 </div>
+
 
 <div class="container-fluid py-3">
   <div class="container-xl mt-3">

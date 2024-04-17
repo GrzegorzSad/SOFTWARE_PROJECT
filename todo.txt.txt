@@ -1,5 +1,10 @@
 todo:
 
-1. search filters
-2. payment system or at least transactions db
-3. i dunno what to do about reviews, ig leave them like they are rn
+for looks:
+
+find actually good colors
+
+make forms more spaced out
+
+nice review box
+

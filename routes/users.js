@@ -94,7 +94,7 @@ router.get('/new', (req, res) => {
 })
 
 //create
-router.post('/', upload.single('profileImg'), async (req, res) => {
+router.post('/', upload.single('profileImgUrl'), async (req, res) => {
   const { username, email, password, role, lat, lng, addressDesc, address } = req.body;
   const profileImgUrl = req.file ? req.file.path.replace("public", '') : '/default-profile-image.jpg';
 
